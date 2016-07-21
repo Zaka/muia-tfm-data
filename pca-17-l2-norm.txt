@@ -1,0 +1,115 @@
+######################################################################
+######################### Explained variance #########################
+######################################################################
+
+2.35726951e+01
+4.31178312e+00
+3.23949096e+00
+2.02106724e+00
+1.24305134e+00
+1.01001168e+00
+9.94131281e-01
+8.45941181e-01
+7.68322839e-01
+6.90823009e-01
+5.32033279e-01
+4.04427099e-01
+2.72143749e-01
+2.49949046e-01
+1.65198769e-01
+1.52390681e-01
+1.35370708e-01
+9.40517883e-02
+7.24751829e-02
+5.12868338e-02
+3.81045308e-02
+3.19173795e-02
+2.87398451e-02
+2.32981442e-02
+1.38621626e-02
+1.06445642e-02
+6.71962599e-03
+5.25519778e-03
+4.63452915e-03
+3.08622750e-03
+2.82769517e-03
+1.90519149e-03
+9.99646092e-04
+7.52113551e-04
+2.35484894e-04
+1.85681569e-04
+9.23151633e-05
+5.64719593e-05
+3.83082348e-05
+3.71036893e-09
+2.02631503e-31
+
+######################################################################
+############ Correlation (not correlation score) between #############
+################ features an 17 principal components #################
+######################################################################
+
+0.0650158061212 NumUniqueAdresses
+0.0714214692 BitcoinDaysDestroyedCumulative
+0.0730535174461 NumTransactionsTotal
+0.080157958929 BlockSize
+0.0868645085259 NumTransactionsPerBlock
+0.0870635057844 AvgBlockSize
+0.088298451471 NumTransactionsExcluding10000
+0.092921280532 NumTransactionsExcludingPopular
+0.0941009476795 NumTransactionsExcluding1000
+0.0956267088586 NumTransactionsExcluding100
+0.103387693344 NumTransactions
+0.115158070995 NumTransactionsExcluding10
+0.138317492789 TotalBitcoins
+0.151107186956 MarketCap
+0.164831035474 MarketPrice
+0.171273671728 Close
+0.171273671728 Adj-Close
+0.171374467926 High
+0.171546697703 Open
+0.172477877925 Low
+0.195912159528 MinersRevenue
+0.198812247219 NetworkDeficit
+0.304663911632 HashRate
+0.315296714307 Difficulty
+0.325611475282 BitcoinDaysDestroyedMinMonth
+0.333055971755 BitcoiDaysDestroyed
+0.334971879899 BitcoinDaysDestroyedMinWeek
+0.360569362565 CostPerTransaction
+0.678409834196 EstimatedTransactionVolumeUSD
+0.859597995634 TransactionFeesUSD
+0.879518395404 TransactionFees
+0.953880760405 MedianConfirmationTime
+0.960817209956 TxTradeRatio
+0.9800701112 EuroPriceInUSD
+0.981431351706 BitcoinDaysDestroyedMinYear
+0.989397218444 Volume
+0.991164503667 TradeVolume
+0.995408124832 OutputVolume
+0.996655190535 EstimatedTransactionVolume
+0.999539158021 WikipediaTrend
+0.999944402697 CostPerTransactionPercent
+
+######################################################################
+############### PCA minus highly correlated variables ################
+######################################################################
+
+0.103387693344 NumTransactions
+0.138317492789 TotalBitcoins
+0.164831035474 MarketPrice
+0.171273671728 Close
+0.315296714307 Difficulty
+0.333055971755 BitcoiDaysDestroyed
+0.360569362565 CostPerTransaction
+0.859597995634 TransactionFeesUSD
+0.879518395404 TransactionFees
+0.953880760405 MedianConfirmationTime
+0.960817209956 TxTradeRatio
+0.9800701112 EuroPriceInUSD
+0.989397218444 Volume
+0.991164503667 TradeVolume
+0.995408124832 OutputVolume
+0.996655190535 EstimatedTransactionVolume
+0.999539158021 WikipediaTrend
+0.999944402697 CostPerTransactionPercent

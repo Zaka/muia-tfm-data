@@ -1,4 +1,4 @@
-Date,NumTransactions,NumTransactionsExcluding10,NumTransactionsExcluding100,NumTransactionsExcluding1000,NumTransactionsExcluding10000,NumTransactionsExcludingPopular
+,NumTransactions,NumTransactionsExcluding10,NumTransactionsExcluding100,NumTransactionsExcluding1000,NumTransactionsExcluding10000,NumTransactionsExcludingPopular
 2009-01-03 18:15:05,1.0,1.0,1.0,1.0,1.0,1.0
 2009-01-04 18:15:05,0.0,0.0,0.0,0.0,0.0,0.0
 2009-01-05 18:15:05,0.0,0.0,0.0,0.0,0.0,0.0
@@ -2676,4 +2676,3 @@ Date,NumTransactions,NumTransactionsExcluding10,NumTransactionsExcluding100,NumT
 2016-04-30 18:15:05,228751.0,82390.0,129590.0,165369.0,184427.0,225357.0
 2016-05-01 18:15:05,191715.0,74091.0,118741.0,149664.0,165682.0,189132.0
 2016-05-02 18:15:05,214077.0,84086.0,130537.0,167306.0,185642.0,211475.0
-2016-05-03 16:36:36,240678.0,95638.0,143643.0,184314.0,196866.0,234773.0

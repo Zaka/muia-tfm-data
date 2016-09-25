@@ -35,6 +35,25 @@ for f in files:
     df = pd.read_csv(f, parse_dates=True,
                      dayfirst=True, index_col=0)
 
+    # Reindex between first and last date
+    first = df.first_valid_index()
+    last = df.last_valid_index()
+
+    if first > last:
+        temp = first.copy()
+        first = last
+        last = temp
+    
+    idx = pd.date_range(first, last)
+    df = df.reindex(idx, fill_value='NaN')
+
+    # Transform column type to float64
+
+    df = df.astype(np.float64)
+    
+    # Interpolate missing dates
+
+    df = df.interpolate()
     df.to_csv(f)
 
 print("Finished!!")

@@ -1,4 +1,4 @@
-Date,BitcoiDaysDestroyed,BitcoinDaysDestroyedCumulative,BitcoinDaysDestroyedMinMonth,BitcoinDaysDestroyedMinWeek,BitcoinDaysDestroyedMinYear
+,BitcoiDaysDestroyed,BitcoinDaysDestroyedCumulative,BitcoinDaysDestroyedMinMonth,BitcoinDaysDestroyedMinWeek,BitcoinDaysDestroyedMinYear
 2009-01-03 18:15:05,0.0,0.0,0.0,0.0,0.0
 2009-01-04 18:15:05,0.0,0.0,0.0,0.0,0.0
 2009-01-05 18:15:05,0.0,0.0,0.0,0.0,0.0
@@ -2677,4 +2677,3 @@ Date,BitcoiDaysDestroyed,BitcoinDaysDestroyedCumulative,BitcoinDaysDestroyedMinM
 2016-05-01 18:15:05,5739322.0,11103612988.0,5290453.0,5496576.0,949703.0
 2016-05-02 18:15:05,3280376.0,11106893364.0,2222355.0,2824310.0,564667.0
 2016-05-03 18:15:05,2694918.0,11109588282.0,1960490.0,2259070.0,1124024.0
-2016-05-03 21:36:38,0.0,11109588282.0,0.0,0.0,0.0

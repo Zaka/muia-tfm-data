@@ -7,7 +7,8 @@ print("Processing...")
 
 # Transform dates to ISO 8601 date format
 
-files = [ 'bitcoin-days-destroyed.csv', 'blocks-size.csv',
+files = [ 'avg-block-size.csv', 'bitcoin-days-destroyed.csv',
+          'blocks-size.csv',
           'cost-per-transaction-percent.csv',
           'cost-per-transaction.csv', 'difficulty.csv',
           'estimated-transaction-volume-usd.csv',
@@ -35,25 +36,9 @@ for f in files:
     df = pd.read_csv(f, parse_dates=True,
                      dayfirst=True, index_col=0)
 
-    # Reindex between first and last date
-    first = df.first_valid_index()
-    last = df.last_valid_index()
+    df.index = df.index.normalize()
+    df = df['2009-01-03':'2016-04-28']
 
-    if first > last:
-        temp = first.copy()
-        first = last
-        last = temp
-    
-    idx = pd.date_range(first, last)
-    df = df.reindex(idx, fill_value='NaN')
-
-    # Transform column type to float64
-
-    df = df.astype(np.float64)
-    
-    # Interpolate missing dates
-
-    df = df.interpolate()
     df.to_csv(f)
 
 print("Finished!!")

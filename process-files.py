@@ -22,7 +22,6 @@ files = [ 'avg-block-size.csv', 'bitcoin-days-destroyed.csv',
           'n-transactions-excluding-chains-longer-than-1000.csv',
           'n-transactions-excluding-chains-longer-than-10000.csv',
           'n-transactions-excluding-popular.csv',
-          'n-transactions-multiple.csv',
           'n-transactions-per-block.csv',
           'n-transactions-total.csv', 'n-transactions.csv',
           'n-unique-addresses.csv', 'network-deficit.csv',
@@ -32,13 +31,17 @@ files = [ 'avg-block-size.csv', 'bitcoin-days-destroyed.csv',
           'tx-trade-ratio.csv',
           'wikipedia-trends-bitcoin-may-2016.csv' ]
 
-for f in files:
-    df = pd.read_csv(f, parse_dates=True,
+data_set = pd.read_csv(files[0], parse_dates=True,
+                       dayfirst=True, index_col=0)
+
+len_files = len(files)
+
+for i in range(1, len_files):
+    df = pd.read_csv(files[i], parse_dates=True,
                      dayfirst=True, index_col=0)
 
-    df.index = df.index.normalize()
-    df = df['2009-01-03':'2016-04-28']
+    data_set = data_set.join(df)
 
-    df.to_csv(f)
+data_set.to_csv('data-set.csv')
 
 print("Finished!!")

@@ -1,13 +1,15 @@
-library(xts)
-
 main <- function() {
     data <- read.csv(file = 'data-set.csv', sep = ',')
-
     data$Date <- as.Date(as.character(data$Date), format('%Y-%m-%d'))
 
-    ts.MarketPrice <- ts(data$MarketPrice, frequency = 365.25)
+    store.column(data, 'MarketPrice')
+}
 
-    decomposition.stl <- stl(ts.MarketPrice,
+store.column <- function(data, col.name) {
+    ts.name <- paste("ts.", col.name, sep = "")
+    ts.name <- ts(data[[col.name]], frequency = 365.25)
+
+    decomposition.stl <- stl(ts.name,
                              t.window = 15,
                              s.window = "periodic",
                              robust = TRUE)
@@ -16,10 +18,11 @@ main <- function() {
 
     decom.col.names <- colnames(decomposition.df)
     
-    decomposition.df$MarketPrice <- ts.MarketPrice
+    decomposition.df[col.name] <- ts.name
 
-    decomposition.df <- decomposition.df[c('MarketPrice', decom.col.names)]
+    decomposition.df <- decomposition.df[c(col.name, decom.col.names)]
     
-    write.csv(decomposition.df, 'MarketPrice.csv', row.names=F)
+    write.csv(decomposition.df,
+              paste(col.name, '.csv', sep = ""),
+              row.names=F)
 }
-

@@ -5,8 +5,6 @@ get.var.with.optimized.lag <- function() {
     bitcoinData <- read.csv(file = 'data-set.csv',
                             sep = ',')
 
-    ## DONE: Test removing correlated variables with
-    ## coeficients greater than 0.9
     bitcoinData$X <- NULL
     bitcoinData$NumTransactionsPerBlock <- NULL
     bitcoinData$NetworkDeficit <- NULL
@@ -62,27 +60,3 @@ plot.forecast <- function() {
     fcst <- forecast(get.var.with.optimized.lag())
     plot(fcst)
 }
-
-######################################################################
-######################################################################
-####################### Train/Test validation ########################
-######################################################################
-######################################################################
-
-## TODO: Asses the accuracy of the prediction obtained
-
-## The function accuracy can be used on a forecast like this:
-## accuracy(fcst)
-
-## 0 - Partition the time series
-## 1 - Asses the accuracy on a single partitioned set.
-## 1.1 - Pick a partition of all but the last 7 entries of each ts
-## 1.2 - Get a VAR model and a forecast of 1,2,3,4,5,6,7 days ahead.
-## 1.3 - Asses the accuracy of that prediction using the 7 last data
-## points of the data-set.
-
-######################################################################
-######################################################################
-###################### Rolling cross validation ######################
-######################################################################
-######################################################################

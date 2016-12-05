@@ -74,9 +74,6 @@ get.forecast.of.var <- function() {
     return(forecast(get.var.model.for.ts(get.train.partition())))
 }
 
-## TODO: Revisar el fichero error.R del repositorio forecast/R
-## Probablemente lo que pasa es que en test hay que introducir un
-## intervalo del set original, pero no estoy sabiendo como lo hacen.
 compute.accuracy.of.forecast <- function() {
     forecast.accuracy <- accuracy(get.forecast.of.var(),
                                   x = data.ts)

@@ -30,9 +30,9 @@ get.data.as.ts <- function() {
                             sep = ',')
 
     bitcoinData$X <- NULL
-    bitcoinData$NumTransactionsPerBlock <- NULL
-    bitcoinData$NetworkDeficit <- NULL
-    bitcoinData$TotalBitcoins <- NULL
+    ## bitcoinData$NumTransactionsPerBlock <- NULL
+    ## bitcoinData$NetworkDeficit <- NULL
+    ## bitcoinData$TotalBitcoins <- NULL
 
     bitcoinData.ts <- as.ts(bitcoinData, frequency = 365.25)
 

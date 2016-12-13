@@ -21,8 +21,14 @@ library(forecast)
 ## Results:
 ##     "MAE:  0.0376852459544154"
 ##     user   system  elapsed 
-## 1209.608 3552.036  727.973 
+## 1209.608 3552.036  727.973
 
+## Given that MarketPrice was normalized using this formula:
+## (MarketPrice - MarketPriceMean) / MarketPriceStdDev
+## MarketPriceMean = 155.3755406486043852965
+## MarketPriceStdDev = 218.3984954558443689621
+## we can find the MAE in USD to be:
+## (MarketPriceNorm * MarketPriceStdDev) + MarketPriceMean = 163.6059416659321641419 USD
 ######################################################################
 
 get.data.as.ts <- function() {

@@ -174,5 +174,5 @@ wrapper.greedy.fss <- function() {
 }
 
 main <- function() {
-    time.it(tscv.score)
+    time.it(wrapper.greedy.fss)
 }

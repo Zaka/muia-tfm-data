@@ -2,33 +2,7 @@ library(vars)
 library(forecast)
 
 ######################################################################
-######################################################################
-#################### Time series cross-validation ####################
-######################################################################
-######################################################################
-
-## Choose a minimum partition size K
-
-## For i in 1:length(data.ts):
-##     * Create a model from a partition of size k, containing elements
-##       i to K + i.
-##     * Test the model using the (K + i + 1)-th element.
-##     * Store the result of the test in a vector (if there are various
-##       tests, store a vector per test)
-
-## Compare the results with other models results
-
-## Results:
-##     "MAE:  0.0376852459544154"
-##     user   system  elapsed 
-## 1209.608 3552.036  727.973
-
-## Given that MarketPrice was normalized using this formula:
-## (MarketPrice - MarketPriceMean) / MarketPriceStdDev
-## MarketPriceMean = 155.3755406486043852965
-## MarketPriceStdDev = 218.3984954558443689621
-## we can find the MAE in USD to be:
-## (MarketPriceNorm * MarketPriceStdDev) + MarketPriceMean = 163.6059416659321641419 USD
+############################# Wrapper FSS ############################
 ######################################################################
 
 get.data.as.ts <- function() {
@@ -92,8 +66,10 @@ get.min.max.lags <- function(selection) {
 test.model <- function(model, test.partition) {
     fcst <- forecast(model, h = 1)
 
-    market.price.prediction <- denormalize.market.price(fcst$mean$MarketPrice[1])
-    market.price.test <- denormalize.market.price(test.partition[[1,"MarketPrice"]])
+    market.price.prediction <-
+        denormalize.market.price(fcst$mean$MarketPrice[1])
+    market.price.test <-
+        denormalize.market.price(test.partition[[1,"MarketPrice"]])
     
     return(abs(market.price.test - market.price.prediction))
 }
@@ -105,20 +81,18 @@ denormalize.market.price <- function(norm.market.price) {
     return(norm.market.price * market.price.std.dev + market.price.mean)
 }
 
-main <- function() {
+tscv.score <- function(data.ts) {
     ## The minimum partition size is = 365 * 3, 3 years
     ## This size had to be choosen because before this period there
     ## are multiple features which values are near zero, with high
     ## correlation and causing troubles in VAR function.
     K <- 1095
 
-    data.ts <- get.data.as.ts()
-
     mae <- c()
     
     ## DEBUG:
-    ## for (i in K:(length(data.ts[,1]) - 1)) {
-    for (i in K:1195) {
+    ## for (i in K:1099) {
+    for (i in K:(length(data.ts[,1]) - 1)) {
         print(i)
         
         training.partition <- window(data.ts,
@@ -127,7 +101,7 @@ main <- function() {
         test.partition <- window(data.ts,
                                  start = i + 1,
                                  end = i + 1)
-
+        
         model <- train.var.model(training.partition)
 
         mae <- c(mae, test.model(model,test.partition))
@@ -135,19 +109,70 @@ main <- function() {
 
     result <- mean(mae)
 
-    print(paste("MAE: ", result))
+    return(result)
 }
 
-time.function <- function(fun) {
-    print("Entrying time.function")
+time.it <- function(fun,args) {
+    print("Timing function...")
 
     ## Start the clock!
     ptm <- proc.time()
 
-    fun()
+    result <- fun(args)
 
     ## Stop the clock
-    print(proc.time() - ptm)
+    print(paste("Elapsed time in seconds is", (proc.time() - ptm)[[3]]))
 
     print("Going out...")
+
+    return(result)
+}
+
+## Wrapper Greedy Feature Subset Selection
+wrapper.greedy.fss <- function() {
+    data.ts <- get.data.as.ts()
+    
+    mae <- .Machine$integer.max
+    selected.features <- c("MarketPrice")
+    not.selected.features <- colnames(data.ts)
+    not.selected.features <- not.selected.features[not.selected.features != "MarketPrice"]
+
+    repeat {
+        new.mae <- .Machine$integer.max
+        selected.feature <- ""
+        
+        for (col in not.selected.features) {
+            temp.selected.features <- c(selected.features, col)
+
+            print(paste("Features been scored: ",
+                        toString(temp.selected.features)))
+            
+            temp.mae <-time.it(
+                tscv.score, data.ts[,temp.selected.features])
+                
+            if (temp.mae < new.mae) {
+                new.mae <- temp.mae
+                selected.feature <- col
+            }
+        }
+        
+        if (new.mae < mae) {
+            mae <- new.mae
+            selected.features <- c(selected.features, selected.feature)
+            not.selected.features <-
+                not.selected.features[not.selected.features != selected.feature]
+
+            print(paste("Add new feature", toString(selected.feature)))
+            print(paste("New MAE:", mae))
+
+        } else {
+            print("Finished")
+            print(paste("Selected features are:", toString(selected.features)))
+            break
+        }
+    }
+}
+
+main <- function() {
+    time.it(tscv.score)
 }

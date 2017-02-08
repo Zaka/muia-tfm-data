@@ -1,44 +1,29 @@
 library(vars)
 library(forecast)
 
-######################################################################
+
 ######################################################################
 #################### Time series cross-validation ####################
 ######################################################################
-######################################################################
-
-## Choose a minimum partition size K
-
-## For i in 1:length(data.ts):
-##     * Create a model from a partition of size k, containing elements
-##       i to K + i.
-##     * Test the model using the (K + i + 1)-th element.
-##     * Store the result of the test in a vector (if there are various
-##       tests, store a vector per test)
-
-## Compare the results with other models results
 
 ## Results:
-##     "MAE:  0.0376852459544154"
-##     user   system  elapsed 
-## 1209.608 3552.036  727.973
+## MAE:  8.23040118857538 USD
+## Elapsed time in seconds is 534.915999999997 = 8.915267 mins
 
-## Given that MarketPrice was normalized using this formula:
-## (MarketPrice - MarketPriceMean) / MarketPriceStdDev
-## MarketPriceMean = 155.3755406486043852965
-## MarketPriceStdDev = 218.3984954558443689621
-## we can find the MAE in USD to be:
-## (MarketPriceNorm * MarketPriceStdDev) + MarketPriceMean = 163.6059416659321641419 USD
-######################################################################
+denormalize.market.price <- function(norm.market.price) {
+    market.price.std.dev <- 218.3985
+    market.price.mean <- 155.3755
+
+    return(norm.market.price * market.price.std.dev + market.price.mean)
+}
 
 get.data.as.ts <- function() {
     bitcoinData <- read.csv(file = 'data-set.csv',
                             sep = ',')
 
     bitcoinData$X <- NULL
-    ## bitcoinData$NumTransactionsPerBlock <- NULL
-    ## bitcoinData$NetworkDeficit <- NULL
-    ## bitcoinData$TotalBitcoins <- NULL
+    bitcoinData$Index <- NULL
+    bitcoinData$Y <- NULL
 
     bitcoinData.ts <- as.ts(bitcoinData, frequency = 365.25)
 
@@ -90,13 +75,16 @@ get.min.max.lags <- function(selection) {
 
 test.model <- function(model, test.partition) {
     fcst <- forecast(model, h = 1)
-    forecast.accuracy <- accuracy(fcst,
-                                  x = test.partition)
 
-    return(forecast.accuracy["MarketPrice Test set","MAE"])
+    market.price.prediction <-
+        denormalize.market.price(fcst$mean$MarketPrice[1])
+    market.price.test <-
+        denormalize.market.price(test.partition[[1,"MarketPrice"]])
+    
+    return(abs(market.price.test - market.price.prediction))
 }
 
-main <- function() {
+tscv.score <- function() {
     ## The minimum partition size is = 365 * 3, 3 years
     ## This size had to be choosen because before this period there
     ## are multiple features which values are near zero, with high
@@ -108,8 +96,8 @@ main <- function() {
     mae <- c()
     
     ## DEBUG:
+    ## for (i in K:1100) {
     for (i in K:(length(data.ts[,1]) - 1)) {
-        ## for (i in K:411) {
 
         print(i)
         
@@ -129,16 +117,26 @@ main <- function() {
     print(paste("MAE: ", result))
 }
 
-time.function <- function(fun) {
-    print("Entrying time.function")
+time.it <- function(fun,args = NULL) {
+    print("Timing function...")
 
     ## Start the clock!
     ptm <- proc.time()
 
-    fun()
+    if (is.null(args)) {
+        result <- fun()
+    } else {
+        result <- fun(args)
+    }
 
     ## Stop the clock
-    print(proc.time() - ptm)
+    print(paste("Elapsed time in seconds is", (proc.time() - ptm)[[3]]))
 
     print("Going out...")
+
+    return(result)
+}
+
+main <- function() {
+    time.it(tscv.score)
 }

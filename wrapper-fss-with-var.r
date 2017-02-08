@@ -103,7 +103,6 @@ tscv.score <- function(data.ts) {
                                  end = i + 1)
         
         model <- train.var.model(training.partition)
-
         mae <- c(mae, test.model(model,test.partition))
     }
 

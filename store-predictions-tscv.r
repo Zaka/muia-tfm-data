@@ -9,11 +9,18 @@ get.data.as.ts <- function() {
     bitcoinData <- read.csv(file = '../muia-tfm-dataset/dataset.csv',
                             sep = ',')
 
-    bitcoinData$X <- NULL
-    bitcoinData$Index <- NULL
-    bitcoinData$Y <- NULL
-
-    ## TODO Select the best features discovered by WFSS-VAR
+    bitcoinData$NumTransactions <- NULL
+    bitcoinData$TotalBitcoins <- NULL
+    bitcoinData$Difficulty <- NULL
+    bitcoinData$BitcoinDaysDestroyed <- NULL
+    bitcoinData$CostPerTransaction <- NULL
+    bitcoinData$TransactionFeesUSD <- NULL
+    bitcoinData$TransactionFees <- NULL
+    bitcoinData$MedianConfirmationTime <- NULL
+    bitcoinData$TxTradeRatio <- NULL
+    bitcoinData$TradeVolume <- NULL
+    bitcoinData$OutputVolume <- NULL
+    bitcoinData$WikipediaTrend <- NULL
     
     bitcoinData.ts <- as.ts(bitcoinData, frequency = 365.25)
 
@@ -81,7 +88,7 @@ denormalize.market.price <- function(norm.market.price) {
 }
 
 tscv.score <- function(data.ts) {
-     ## This size had to be choosen because before this period there
+    ## This size had to be choosen because before this period there
     ## are multiple features which values are near zero, with high
     ## correlation and causing troubles in VAR function.
     K <- 1095
@@ -127,11 +134,13 @@ tscv.score <- function(data.ts) {
                      predictions)
 
     output.results <- data.frame(market.price, predictions)
-    colnames(output.results) <- c("MarketPrice", "NextDayPrediction")
+    colnames(output.results) <- c("MarketPrice", "VAR-Prediction")
     
     ## Guardar en CSV COPÓN
     write.csv(output.results,
-              file = "output.results.csv",
+              file = paste("output.var.",
+                           format(Sys.time(), "%Y%m%d-%H%M%S"),
+                           ".csv", sep = ""),
               row.names = FALSE)
 }
 

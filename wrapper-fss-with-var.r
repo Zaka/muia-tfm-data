@@ -6,12 +6,12 @@ library(forecast)
 ######################################################################
 
 get.data.as.ts <- function() {
-    bitcoinData <- read.csv(file = 'data-set.csv',
+    bitcoinData <- read.csv(file = '../muia-tfm-dataset/dataset.csv',
                             sep = ',')
 
-    bitcoinData$X <- NULL
-    bitcoinData$Index <- NULL
-    bitcoinData$Y <- NULL
+    ## bitcoinData$X <- NULL
+    ## bitcoinData$Index <- NULL
+    ## bitcoinData$Y <- NULL
  
     bitcoinData.ts <- as.ts(bitcoinData, frequency = 365.25)
 
@@ -111,13 +111,17 @@ tscv.score <- function(data.ts) {
     return(result)
 }
 
-time.it <- function(fun,args) {
+time.it <- function(fun,args = NULL) {
     print("Timing function...")
 
     ## Start the clock!
     ptm <- proc.time()
 
-    result <- fun(args)
+    if (is.null(args)) {
+        result <- fun()
+    } else {
+        result <- fun(args)
+    }
 
     ## Stop the clock
     print(paste("Elapsed time in seconds is", (proc.time() - ptm)[[3]]))
